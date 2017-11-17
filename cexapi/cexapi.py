@@ -74,6 +74,10 @@ class API(object):
     def place_order(self, ptype='buy', amount=1, price=1, couple='GHS/BTC'):
         return self.api_call('place_order', {"type": ptype, "amount": str(amount), "price": str(price)}, 1, couple)
 
+   def place_market_order(self, ptype='buy', amount=1, couple='GHS/BTC'):
+       return self.api_call('place_order', {"type": ptype, "amount": str(amount), "order_type" : "market"}, 1, couple)
+
+
     def price_stats(self, last_hours, max_resp_arr_size, couple='GHS/BTC'):
         return self.api_call(
                 'price_stats',
