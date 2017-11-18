@@ -19,7 +19,7 @@ class API(object):
     __nonce_v = ''
 
     # Init class
-    def __init__(self, username, api_key, api_secret):
+    def __init__(self, username="", api_key="", api_secret=""):
         self.__username = username
         self.__api_key = api_key
         self.__api_secret = api_secret
@@ -76,6 +76,10 @@ class API(object):
 
     def place_market_order(self, ptype='buy', amount=1, couple='GHS/BTC'):
        return self.api_call('place_order', {"type": ptype, "amount": str(amount), "order_type" : "market"}, 1, couple)
+   
+    def markets(self):
+        response = self.api_call("currency_limits", )
+        return [ pair['symbol1'] + "/" + pair['symbol2'] for pair in response['data']['pairs'] ]
 
     def price_stats(self, last_hours, max_resp_arr_size, couple='GHS/BTC'):
         return self.api_call(
