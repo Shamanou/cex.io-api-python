@@ -4,11 +4,12 @@
 # Jabber:	t0pep0@jabber.ru
 # BTC   :	1ipEA2fcVyjiUnBqUx7PVy5efktz2hucb
 # donate free =)
-import hashlib
 import hmac
+import hashlib
 import time
-import urllib.parse
-import requests
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import json
 
 
 class API(object):
@@ -30,15 +31,13 @@ class API(object):
     # generate segnature
     def __signature(self):
         string = self.__nonce_v + self.__username + self.__api_key  # create string
-        signature = hmac.new(self.__api_secret, string, digestmod=hashlib.sha256).hexdigest(
-        ).upper()  # create signature
+        signature = hmac.new(self.__api_secret, string, digestmod=hashlib.sha256).hexdigest().upper()  # create signature
         return signature
 
     def __post(self, url, param):  # Post Request (Low Level API call)
         params = urllib.parse.urlencode(param)
-        req = requests.post(
-            url, data=params, headers={'User-agent': 'bot-cex.io-' + self.__username})
-        page = req.json()
+        req = urllib.request.Request(url, params, {'User-agent': 'bot-cex.io-' + self.__username})
+        page = urllib.request.urlopen(req).read()
         return page
 
     def api_call(self, method, param={}, private=0, couple=''):  # api call (Middle level)
@@ -52,7 +51,7 @@ class API(object):
                 'signature': self.__signature(),
                 'nonce': self.__nonce_v})
         answer = self.__post(url, param)  # Post Request
-        return answer  # generate dict and return
+        return json.loads(answer)  # generate dict and return
 
     def ticker(self, couple='GHS/BTC'):
         return self.api_call('ticker', {}, 0, couple)
@@ -76,14 +75,14 @@ class API(object):
         return self.api_call('place_order', {"type": ptype, "amount": str(amount), "price": str(price)}, 1, couple)
 
     def place_market_order(self, ptype='buy', amount=1, couple='GHS/BTC'):
-        return self.api_call('place_order', {"type": ptype, "amount": str(amount), "order_type": "market"}, 1, couple)
-
+       return self.api_call('place_order', {"type": ptype, "amount": str(amount), "order_type" : "market"}, 1, couple)
+   
     def markets(self):
         response = self.api_call("currency_limits", )
-        return [pair['symbol1'] + "/" + pair['symbol2'] for pair in response['data']['pairs']]
+        return [ pair['symbol1'] + "/" + pair['symbol2'] for pair in response['data']['pairs'] ]
 
     def price_stats(self, last_hours, max_resp_arr_size, couple='GHS/BTC'):
         return self.api_call(
-            'price_stats',
-            {"lastHours": last_hours, "maxRespArrSize": max_resp_arr_size},
-            0, couple)
+                'price_stats',
+                {"lastHours": last_hours, "maxRespArrSize": max_resp_arr_size},
+                0, couple)

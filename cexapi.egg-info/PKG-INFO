@@ -6,7 +6,6 @@ Home-page: UNKNOWN
 Author: t0pep0
 Author-email: t0pep0.gentoo@gmail.com
 License: UNKNOWN
-Description-Content-Type: UNKNOWN
 Description: cex.io-api-python
         =================
         
@@ -50,7 +49,7 @@ Description: cex.io-api-python
         3. trade_history(since = 1, couple = 'GHS/BTC') -  get all order
         4. balance() - get your balance
         5. current_orders(couple = 'GHS/BTC') - get open order
-        6. cancel_order(order_id) - cancel order №order_id
+        6. cancel_order(order_id) - cancel order â„–order_id
         7. place_order(ptype = 'buy', amount = 1, price = 1, couple = 'GHS/BTC') - create order
         ```
              
