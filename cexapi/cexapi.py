@@ -7,8 +7,8 @@
 import hmac
 import hashlib
 import time
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import json
 
 
@@ -35,9 +35,9 @@ class API(object):
         return signature
 
     def __post(self, url, param):  # Post Request (Low Level API call)
-        params = urllib.urlencode(param)
-        req = urllib2.Request(url, params, {'User-agent': 'bot-cex.io-' + self.__username})
-        page = urllib2.urlopen(req).read()
+        params = urllib.parse.urlencode(param)
+        req = urllib.request.Request(url, params, {'User-agent': 'bot-cex.io-' + self.__username})
+        page = urllib.request.urlopen(req).read()
         return page
 
     def api_call(self, method, param={}, private=0, couple=''):  # api call (Middle level)
