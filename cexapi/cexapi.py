@@ -33,7 +33,7 @@ class API(object):
         ).upper()  # create signature
         return signature
 
-    def __post(self, url, param):  # Post Request (Low Level API call)
+    def __post(self, url, params):  # Post Request (Low Level API call)
         req = requests.post(
             url, data=params, headers={'User-agent': 'bot-cex.io-' + self.__username})
         page = req.json()
