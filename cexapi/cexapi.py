@@ -7,7 +7,6 @@
 import hashlib
 import hmac
 import time
-import urllib.parse
 import requests
 
 
@@ -35,7 +34,6 @@ class API(object):
         return signature
 
     def __post(self, url, param):  # Post Request (Low Level API call)
-        params = urllib.parse.urlencode(param)
         req = requests.post(
             url, data=params, headers={'User-agent': 'bot-cex.io-' + self.__username})
         page = req.json()
